@@ -24,7 +24,7 @@
 #include <hibf/detail/timer.hpp>              // for concurrent, timer
 #include <hibf/interleaved_bloom_filter.hpp>  // for interleaved_bloom_filter, bin_count, bin_size, hash_fun...
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 seqan::hibf::interleaved_bloom_filter construct_ibf(robin_hood::unordered_flat_set<uint64_t> & parent_kmers,
@@ -59,4 +59,4 @@ seqan::hibf::interleaved_bloom_filter construct_ibf(robin_hood::unordered_flat_s
     return ibf;
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

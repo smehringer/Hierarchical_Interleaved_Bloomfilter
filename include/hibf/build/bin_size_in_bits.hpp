@@ -17,7 +17,7 @@
 
 #include <hibf/platform.hpp>
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 struct bin_size_parameters
@@ -35,4 +35,4 @@ inline size_t bin_size_in_bits(bin_size_parameters const & params)
     return result;
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

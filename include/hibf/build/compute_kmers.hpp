@@ -18,11 +18,11 @@
 #include <hibf/contrib/robin_hood.hpp> // for unordered_flat_set
 #include <hibf/layout/layout.hpp>      // for layout
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 void compute_kmers(robin_hood::unordered_flat_set<uint64_t> & kmers,
                    build_data const & data,
                    layout::layout::user_bin const & record);
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

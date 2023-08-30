@@ -17,7 +17,7 @@
 #include <hibf/detail/timer.hpp>       // for concurrent, timer
 #include <hibf/platform.hpp>
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 inline void update_parent_kmers(robin_hood::unordered_flat_set<uint64_t> & parent_kmers,
@@ -31,4 +31,4 @@ inline void update_parent_kmers(robin_hood::unordered_flat_set<uint64_t> & paren
     merge_kmers_timer += local_merge_kmers_timer;
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

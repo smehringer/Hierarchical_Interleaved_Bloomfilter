@@ -22,7 +22,7 @@
 #include <hibf/interleaved_bloom_filter.hpp>        // for interleaved_bloom_filter, bin_index
 #include <hibf/layout/layout.hpp>                   // for layout
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 // automatically does naive splitting if number_of_bins > 1
@@ -70,4 +70,4 @@ void insert_into_ibf(build_data const & data,
     data.fill_ibf_timer += local_fill_ibf_timer;
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

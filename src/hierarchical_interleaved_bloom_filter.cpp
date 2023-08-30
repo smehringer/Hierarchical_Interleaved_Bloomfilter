@@ -22,7 +22,7 @@
 #include <hibf/build/compute_kmers.hpp>                   // for compute_kmers
 #include <hibf/build/construct_ibf.hpp>                   // for construct_ibf
 #include <hibf/build/initialise_build_tree.hpp>           // for initialise_build_tree
-#include <hibf/build/insert_into_ibf.hpp>                 // for insert_into_ibf
+#include <hibf/build/insert_into_ibf.hpp>                 // for build::insert_into_ibf
 #include <hibf/build/node_data.hpp>                       // for node_data
 #include <hibf/build/update_parent_kmers.hpp>             // for update_parent_kmers
 #include <hibf/build/update_user_bins.hpp>                // for update_user_bins
@@ -41,7 +41,7 @@ namespace seqan::hibf
 size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
                           robin_hood::unordered_flat_set<uint64_t> & parent_kmers,
                           lemon::ListDigraph::Node const & current_node,
-                          build_data & data,
+                          build::build_data & data,
                           bool is_root)
 {
     auto & current_node_data = data.node_map[current_node];
@@ -67,8 +67,8 @@ size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
         {
             // we assume that the max record is at the beginning of the list of remaining records.
             auto const & record = node_data.remaining_records[0];
-            compute_kmers(kmers, data, record);
-            update_user_bins(filename_indices, record);
+            build::compute_kmers(kmers, data, record);
+            build::update_user_bins(filename_indices, record);
 
             return record.number_of_technical_bins;
         }
@@ -123,9 +123,9 @@ size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
                     size_t const mutex_id{parent_bin_index / 64};
                     std::lock_guard<std::mutex> guard{local_ibf_mutex[mutex_id]};
                     ibf_positions[parent_bin_index] = ibf_pos;
-                    insert_into_ibf(kmers, 1, parent_bin_index, ibf, data.fill_ibf_timer);
+                    build::insert_into_ibf(kmers, 1, parent_bin_index, ibf, data.fill_ibf_timer);
                     if (!is_root)
-                        update_parent_kmers(parent_kmers, kmers, data.merge_kmers_timer);
+                        build::update_parent_kmers(parent_kmers, kmers, data.merge_kmers_timer);
                 }
             }
         }
@@ -141,17 +141,17 @@ size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
 
         if (is_root && record.number_of_technical_bins == 1) // no splitting needed
         {
-            insert_into_ibf(data, record, ibf);
+            build::insert_into_ibf(data, record, ibf);
         }
         else
         {
             compute_kmers(kmers, data, record);
-            insert_into_ibf(kmers, record.number_of_technical_bins, record.storage_TB_id, ibf, data.fill_ibf_timer);
+            build::insert_into_ibf(kmers, record.number_of_technical_bins, record.storage_TB_id, ibf, data.fill_ibf_timer);
             if (!is_root)
-                update_parent_kmers(parent_kmers, kmers, data.merge_kmers_timer);
+                build::update_parent_kmers(parent_kmers, kmers, data.merge_kmers_timer);
         }
 
-        update_user_bins(filename_indices, record);
+        build::update_user_bins(filename_indices, record);
         kmers.clear();
     }
 
@@ -164,7 +164,7 @@ size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
 
 size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
                           lemon::ListDigraph::Node const & root_node,
-                          build_data & data)
+                          build::build_data & data)
 {
     robin_hood::unordered_flat_set<uint64_t> root_kmers{};
     return hierarchical_build(hibf, root_kmers, root_node, data, true);
@@ -181,7 +181,7 @@ void build_index(hierarchical_interleaved_bloom_filter & hibf,
     hibf.user_bins.set_user_bin_count(hibf_layout.user_bins.size());
     hibf.next_ibf_id.resize(number_of_ibfs);
 
-    build_data data{.config = config};
+    build::build_data data{.config = config};
 
     initialise_build_tree(hibf_layout, data.ibf_graph, data.node_map);
     lemon::ListDigraph::Node root_node = data.ibf_graph.nodeFromId(0); // root node = top-level IBF node

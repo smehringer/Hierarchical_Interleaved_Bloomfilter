@@ -17,7 +17,7 @@
 #include <hibf/config.hpp>          // for config
 #include <hibf/detail/timer.hpp>    // for concurrent, timer
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 struct build_data
@@ -46,4 +46,4 @@ struct build_data
     }
 };
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

@@ -21,7 +21,7 @@
 #include <hibf/detail/timer.hpp>        // for concurrent, timer
 #include <hibf/layout/layout.hpp>       // for layout
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 void compute_kmers(robin_hood::unordered_flat_set<uint64_t> & kmers,
@@ -35,4 +35,4 @@ void compute_kmers(robin_hood::unordered_flat_set<uint64_t> & kmers,
     data.user_bin_io_timer += local_user_bin_io_timer;
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build

@@ -13,7 +13,7 @@
 
 #include <hibf/layout/layout.hpp> // for layout
 
-namespace seqan::hibf
+namespace seqan::hibf::build
 {
 
 inline void update_user_bins(std::vector<int64_t> & filename_indices, layout::layout::user_bin const & record)
@@ -21,4 +21,4 @@ inline void update_user_bins(std::vector<int64_t> & filename_indices, layout::la
     std::fill_n(filename_indices.begin() + record.storage_TB_id, record.number_of_technical_bins, record.idx);
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::build
