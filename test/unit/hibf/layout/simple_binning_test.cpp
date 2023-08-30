@@ -14,7 +14,7 @@ TEST(simple_binning_test, small_example)
     seqan::hibf::layout::layout hibf_layout;
     std::vector<size_t> kmer_counts{100, 40, 20, 20};
 
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout,
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout,
                                  .kmer_counts = &kmer_counts,
                                  .fpr_correction = std::vector<double>(65, 1.0)};
 
@@ -35,7 +35,7 @@ TEST(simple_binning_test, uniform_distribution)
     seqan::hibf::layout::layout hibf_layout;
     std::vector<size_t> kmer_counts{20, 20, 20, 20};
 
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout,
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout,
                                  .kmer_counts = &kmer_counts,
                                  .fpr_correction = std::vector<double>(65, 1.0)};
 
@@ -57,7 +57,7 @@ TEST(simple_binning_test, user_bins_must_be_smaller_than_technical_bins)
 
     std::vector<size_t> kmer_counts{100, 40, 20, 20};
 
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout,
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout,
                                  .kmer_counts = &kmer_counts,
                                  .fpr_correction = std::vector<double>(65, 1.0)};
 

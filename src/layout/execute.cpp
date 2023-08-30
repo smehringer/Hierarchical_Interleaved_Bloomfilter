@@ -12,10 +12,10 @@
 #include <hibf/layout/hierarchical_binning.hpp>   // for hierarchical_binning
 #include <hibf/next_multiple_of_64.hpp>           // for next_multiple_of_64
 
-namespace seqan::hibf
+namespace seqan::hibf::layout
 {
 
-size_t execute(seqan::hibf::config const & config, seqan::hibf::data_store & data)
+size_t execute(seqan::hibf::config const & config, seqan::hibf::layout::data_store & data)
 {
     seqan::hibf::config config_copy{config};
 
@@ -41,11 +41,11 @@ size_t execute(seqan::hibf::config const & config, seqan::hibf::data_store & dat
     }
 
     data.fpr_correction =
-        layout::compute_fpr_correction({.fpr = config_copy.maximum_false_positive_rate, // prevent clang-format
-                                        .hash_count = config_copy.number_of_hash_functions,
-                                        .t_max = config_copy.tmax});
+        compute_fpr_correction({.fpr = config_copy.maximum_false_positive_rate, // prevent clang-format
+                                .hash_count = config_copy.number_of_hash_functions,
+                                .t_max = config_copy.tmax});
 
     return seqan::hibf::layout::hierarchical_binning{data, config_copy}.execute();
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::layout

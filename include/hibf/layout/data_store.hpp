@@ -11,7 +11,7 @@
 #include <hibf/layout/layout.hpp>      // for layout
 #include <hibf/sketch/hyperloglog.hpp> // for hyperloglog
 
-namespace seqan::hibf
+namespace seqan::hibf::layout
 {
 
 struct data_store
@@ -41,7 +41,7 @@ struct data_store
     double false_positive_rate{};
 
     //!\brief The layout that is built by layout::hierarchical_binning.
-    layout::layout * hibf_layout; // Will be modified by {simple,hierarchical}_binning.
+    layout * hibf_layout; // Will be modified by {simple,hierarchical}_binning.
 
     //!\brief The kmer counts associated with the above files used to layout user bin into technical bins.
     std::vector<size_t> const * kmer_counts{}; // Pointed to data should not be modified.
@@ -79,4 +79,4 @@ struct data_store
     //!\}
 };
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::layout

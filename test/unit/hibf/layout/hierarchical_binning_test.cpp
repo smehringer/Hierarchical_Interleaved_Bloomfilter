@@ -19,7 +19,7 @@ TEST(hierarchical_binning_test, small_example)
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 1000, 500, 500, 500, 500, 500, 500};
 
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -49,7 +49,7 @@ TEST(hierarchical_binning_test, another_example)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{50, 1000, 1000, 50, 5, 10, 10, 5};
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -80,7 +80,7 @@ TEST(hierarchical_binning_test, high_level_max_bin_id_is_0)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 500, 500, 500};
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -105,7 +105,7 @@ TEST(hierarchical_binning_test, knuts_example)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{60, 600, 1000, 800, 800};
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -133,7 +133,7 @@ TEST(hierarchical_binning_test, four_level_hibf)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{11090, 5080, 3040, 1020, 510, 500};
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -166,7 +166,7 @@ TEST(hierarchical_binning_test, tb0_is_a_merged_bin)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 500, 500, 500};
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -194,7 +194,7 @@ TEST(hierarchical_binning_test, tb0_is_a_merged_bin_and_leads_to_recursive_call)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 500, 500, 500, 500, 500, 500, 500};
-    seqan::hibf::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});

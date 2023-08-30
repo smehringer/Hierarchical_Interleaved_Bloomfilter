@@ -55,7 +55,7 @@ compute_layout(config const & config, std::vector<size_t> & kmer_counts, std::ve
                      .kmer_counts = std::addressof(kmer_counts),
                      .sketches = std::addressof(sketches)};
 
-    size_t const max_hibf_id = seqan::hibf::execute(config, store);
+    size_t const max_hibf_id = seqan::hibf::layout::execute(config, store);
     store.hibf_layout->top_level_max_bin_id = max_hibf_id;
 
     return *store.hibf_layout; // return layout as string for now, containing the file

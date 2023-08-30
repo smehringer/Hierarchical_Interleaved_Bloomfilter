@@ -4,7 +4,7 @@
 
 #include <hibf/platform.hpp>
 
-namespace seqan::hibf
+namespace seqan::hibf::layout
 {
 
 // helper function to print a matrix when debugging
@@ -28,4 +28,4 @@ void print_matrix(matrix_type const & matrix,
     std::cerr << '\n';
 }
 
-} // namespace seqan::hibf
+} // namespace seqan::hibf::layout
