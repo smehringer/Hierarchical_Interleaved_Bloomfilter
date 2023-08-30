@@ -15,8 +15,8 @@ TEST(simple_binning_test, small_example)
     std::vector<size_t> kmer_counts{100, 40, 20, 20};
 
     seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout,
-                                 .kmer_counts = &kmer_counts,
-                                 .fpr_correction = std::vector<double>(65, 1.0)};
+                                         .kmer_counts = &kmer_counts,
+                                         .fpr_correction = std::vector<double>(65, 1.0)};
 
     seqan::hibf::layout::simple_binning algo{data, 9};
     size_t max_bin = algo.execute();
@@ -36,8 +36,8 @@ TEST(simple_binning_test, uniform_distribution)
     std::vector<size_t> kmer_counts{20, 20, 20, 20};
 
     seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout,
-                                 .kmer_counts = &kmer_counts,
-                                 .fpr_correction = std::vector<double>(65, 1.0)};
+                                         .kmer_counts = &kmer_counts,
+                                         .fpr_correction = std::vector<double>(65, 1.0)};
 
     seqan::hibf::layout::simple_binning algo{data, 4u};
     size_t max_bin = algo.execute();
@@ -58,8 +58,8 @@ TEST(simple_binning_test, user_bins_must_be_smaller_than_technical_bins)
     std::vector<size_t> kmer_counts{100, 40, 20, 20};
 
     seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout,
-                                 .kmer_counts = &kmer_counts,
-                                 .fpr_correction = std::vector<double>(65, 1.0)};
+                                         .kmer_counts = &kmer_counts,
+                                         .fpr_correction = std::vector<double>(65, 1.0)};
 
     EXPECT_THROW((seqan::hibf::layout::simple_binning{data, 2}), std::runtime_error);
 }

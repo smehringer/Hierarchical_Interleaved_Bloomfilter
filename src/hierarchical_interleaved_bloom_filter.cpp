@@ -146,7 +146,11 @@ size_t hierarchical_build(hierarchical_interleaved_bloom_filter & hibf,
         else
         {
             compute_kmers(kmers, data, record);
-            build::insert_into_ibf(kmers, record.number_of_technical_bins, record.storage_TB_id, ibf, data.fill_ibf_timer);
+            build::insert_into_ibf(kmers,
+                                   record.number_of_technical_bins,
+                                   record.storage_TB_id,
+                                   ibf,
+                                   data.fill_ibf_timer);
             if (!is_root)
                 build::update_parent_kmers(parent_kmers, kmers, data.merge_kmers_timer);
         }
