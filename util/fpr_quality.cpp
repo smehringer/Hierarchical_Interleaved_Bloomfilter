@@ -93,7 +93,7 @@ void init_parser(sharg::parser & parser, config & cfg)
 
 size_t split_bin_size_in_bits(config const & cfg)
 {
-    return seqan::hibf::bin_size_in_bits(
+    return seqan::hibf::build::bin_size_in_bits(
         {.fpr = cfg.fpr, .hash_count = cfg.hash, .elements = cfg.split_elements_per_bin});
 }
 
@@ -109,7 +109,7 @@ void print_results(size_t const fp_count, config const & cfg)
 void single_tb(config const & cfg)
 {
     seqan::hibf::interleaved_bloom_filter ibf{seqan::hibf::bin_count{1u},
-                                              seqan::hibf::bin_size{seqan::hibf::bin_size_in_bits(
+                                              seqan::hibf::bin_size{seqan::hibf::build::bin_size_in_bits(
                                                   {.fpr = cfg.fpr, .hash_count = cfg.hash, .elements = cfg.elements})},
                                               seqan::hibf::hash_function_count{cfg.hash}};
     auto agent = ibf.membership_agent();
