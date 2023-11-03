@@ -12,6 +12,7 @@
 #include <hibf/build/bin_size_in_bits.hpp> // for bin_size_in_bits
 #include <hibf/config.hpp>                 // for config
 #include <hibf/layout/data_store.hpp>      // for data_store
+#include <hibf/sketch/hyperloglog.hpp>     // for hyperloglog
 #include <hibf/platform.hpp>               // for HIBF_WORKAROUND_GCC_BOGUS_MEMCPY
 
 namespace seqan::hibf::layout
@@ -32,6 +33,11 @@ private:
     size_t num_user_bins{};
     //!\brief The number of technical bins requested by the user.
     size_t num_technical_bins{};
+
+    /*!\brief given the number of unique kmers in the input and the number of TBs to distribute, in an optimal layout,
+     *        a technical bin will never have a lower weight than `minimum_technical_bin_weight`.
+     */
+    size_t minimum_technical_bin_weight{0};
 
     //!\brief Simplifies passing the parameters needed for tracking the maximum technical bin.
     struct maximum_bin_tracker
@@ -119,6 +125,11 @@ public:
         num_technical_bins{data->previous.empty() ? config.tmax : needed_technical_bins(num_user_bins)}
     {
         assert(data != nullptr);
+        sketch::hyperloglog sketch(config.sketch_bits);
+        assert((data->sketches));
+        for (auto const pos : data->positions)
+            sketch.merge((*data->sketches)[pos]);
+        minimum_technical_bin_weight = std::max(sketch.estimate() / num_technical_bins, 1.0);
     }
 
     //!\brief Executes the hierarchical binning algorithm and layouts user bins into technical bins.

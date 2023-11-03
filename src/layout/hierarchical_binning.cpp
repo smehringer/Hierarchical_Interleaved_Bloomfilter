@@ -164,9 +164,14 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
             size_t minimum{std::numeric_limits<size_t>::max()};
             size_t full_minimum{std::numeric_limits<size_t>::max()};
 
+            // Given number_of_unique_kmers and num_technical_bins, small bins will never be split because merging large
+            // user bins will never lead to an optimal value. + 1 is added because a split into 1 technical bin is not
+            // a split but a single bin.
+            size_t maximum_number_of_splits = std::min(current_weight / minimum_technical_bin_weight, i - 1) + 1;
+
             // check vertical cells
             // this is equivalent of trying to split the current user bin j into (i - i_prime) technical bins
-            for (size_t i_prime = 0; i_prime < i; ++i_prime)
+            for (size_t i_prime = i - maximum_number_of_splits; i_prime < i; ++i_prime)
             {
                 // score: The current maximum technical bin size for the high-level IBF (score for the matrix M)
                 // full_score: The score to minimize -> score * #TB-high_level + low_level_memory footprint
