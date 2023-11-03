@@ -14,6 +14,19 @@
 #include <hibf/layout/layout.hpp>                 // for layout
 #include <hibf/test/expect_range_eq.hpp>          // for expect_range_eq, EXPECT_RANGE_EQ
 
+std::vector<seqan::hibf::sketch::hyperloglog> create_sketches(std::vector<size_t> const & kmer_counts)
+{
+    std::vector<seqan::hibf::sketch::hyperloglog> result;
+    for (size_t i = 0; i < kmer_counts.size(); ++i)
+    {
+        seqan::hibf::sketch::hyperloglog sketch;
+        for (size_t h = 0; h < kmer_counts[i]; ++h)
+            sketch.add(h);
+        result.push_back(sketch);
+    }
+    return result;
+}
+
 TEST(hierarchical_binning_test, small_example)
 {
     seqan::hibf::config config;
@@ -22,8 +35,9 @@ TEST(hierarchical_binning_test, small_example)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 1000, 500, 500, 500, 500, 500, 500};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
 
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -53,7 +67,8 @@ TEST(hierarchical_binning_test, another_example)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{50, 1000, 1000, 50, 5, 10, 10, 5};
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -84,7 +99,8 @@ TEST(hierarchical_binning_test, high_level_max_bin_id_is_0)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 500, 500, 500};
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -109,7 +125,8 @@ TEST(hierarchical_binning_test, knuts_example)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{60, 600, 1000, 800, 800};
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -137,7 +154,8 @@ TEST(hierarchical_binning_test, four_level_hibf)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{11090, 5080, 3040, 1020, 510, 500};
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -170,7 +188,8 @@ TEST(hierarchical_binning_test, tb0_is_a_merged_bin)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 500, 500, 500};
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
@@ -198,7 +217,8 @@ TEST(hierarchical_binning_test, tb0_is_a_merged_bin_and_leads_to_recursive_call)
 
     seqan::hibf::layout::layout hibf_layout{};
     std::vector<size_t> kmer_counts{500, 500, 500, 500, 500, 500, 500, 500};
-    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts};
+    std::vector<seqan::hibf::sketch::hyperloglog> sketches = create_sketches(kmer_counts);
+    seqan::hibf::layout::data_store data{.hibf_layout = &hibf_layout, .kmer_counts = &kmer_counts, .sketches = &sketches};
 
     data.fpr_correction =
         seqan::hibf::layout::compute_fpr_correction({.fpr = 0.05, .hash_count = 2, .t_max = config.tmax});
