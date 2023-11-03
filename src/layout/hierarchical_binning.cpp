@@ -212,8 +212,14 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
 
             // if the user bin j-1 was not split into multiple technical bins!
             // I may merge the current user bin j into the former
-            while (j_prime != 0 && ((i - trace[i][j_prime].first) < 2) && get_weight() < minimum)
+            while (j_prime != 0 && get_weight() < minimum)
             {
+                // If at some point, it was more optimal to split UB_{j_prime} into 2 or more TBs, and we know because
+                // of the sorting, |UB_j| >= |UB_{j_prime}|, it will not be possible to get an optimal layout when
+                // merging former UB together with a (probably large) UB_j
+                if (((i - trace[i][j_prime].first) > 1))
+                    break;
+
                 weight += (*data->kmer_counts)[data->positions[j_prime]];
                 --j_prime;
 
