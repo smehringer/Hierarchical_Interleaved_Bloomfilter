@@ -138,6 +138,9 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
 {
     assert(data != nullptr);
 
+    size_t sum_horizontal_cells{0};
+    size_t sum_vertical_cells{0};
+
     // we must iterate column wise
     // i iterates over the technical bins
     // j iterates over the user bins
@@ -182,7 +185,7 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
                 size_t full_score = score * (i + 1) /*#TBs*/ + config.alpha * ll_matrix[i_prime][j - 1];
 
                 // std::cout << " ++ j:" << j << " i:" << i << " i':" << i_prime << " score:" << score << std::endl;
-
+                ++sum_vertical_cells;
                 if (full_score < full_minimum)
                 {
                     minimum = score;
@@ -233,7 +236,7 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
                 // seqan3::debug_stream << " -- " << "j_prime:" << j_prime
                 //                      << " -> full_score:" << full_score << " (M_{i-1,j'}=" << score << ")"
                 //                      << std::endl;
-
+                ++sum_horizontal_cells;
                 if (full_score < full_minimum)
                 {
                     minimum = score;
@@ -246,6 +249,9 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
             matrix[i][j] = minimum;
         }
     }
+
+    std::cout << "sum_horizontal_cells:" << sum_horizontal_cells << std::endl;
+    std::cout << "sum_vertical_cells:" << sum_vertical_cells << std::endl;
 }
 
 void hierarchical_binning::backtrack_merged_bin(size_t trace_j,
