@@ -88,7 +88,7 @@ void update_union_estimates_with(std::vector<hyperloglog> & estimates,
                                  std::vector<size_t> const & counts,
                                  std::vector<size_t> const & positions,
                                  int64_t const j,
-                                 int64_t const number_of_threads)
+                                 int64_t const number_of_threads);
 
 /*!\brief Estimate the cardinality of the union for each interval [0, j] for all user bins j.
  * \ingroup hibf_sketch_toolbox
