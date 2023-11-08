@@ -81,7 +81,7 @@ struct data_store
     previous_level previous{};
 
     //!\brief Matrix of estimates of merged bin cardinalites
-    std::vector<uint64_t> union_estimates{};
+    std::vector<sketch::hyperloglog> union_estimates{};
 
     bool user_bins_arranged{false};
 

@@ -41,7 +41,7 @@ void precompute_union_estimates_for(std::vector<uint64_t> & estimates,
 {
     assert(counts.size() == sketches.size());
     assert(positions.size() <= counts.size());
-    assert(estimates.size() == sketches.size()); // Resize happens in precompute_init_interval_union_estimations
+    assert(estimates.size() == positions.size()); // Resize happens in precompute_init_interval_union_estimations
     assert(estimates.size() > static_cast<size_t>(j));
 
     hyperloglog temp_hll = sketches[positions[j]];
@@ -49,6 +49,26 @@ void precompute_union_estimates_for(std::vector<uint64_t> & estimates,
 
     for (int64_t j_prime = j - 1; j_prime >= 0; --j_prime)
         estimates[j_prime] = static_cast<uint64_t>(temp_hll.merge_and_estimate(sketches[positions[j_prime]]));
+}
+
+void update_union_estimates_with(std::vector<hyperloglog> & estimates,
+                                 std::vector<hyperloglog> const & sketches,
+                                 std::vector<size_t> const & counts,
+                                 std::vector<size_t> const & positions,
+                                 int64_t const j,
+                                 int64_t const number_of_threads)
+{
+    assert(counts.size() == sketches.size());
+    assert(positions.size() <= counts.size());
+    assert(estimates.size() == sketches.size()); // Resize happens in precompute_init_interval_union_estimations
+    assert(estimates.size() > static_cast<size_t>(j));
+
+    hyperloglog const sketch_j = sketches[positions[j]];
+    estimates[j] = sketch_j;
+
+#pragma omp parallel num_threads(number_of_threads)
+    for (int64_t j_prime = 0; j_prime < j; ++j_prime)
+        estimates[j_prime].merge(sketch_j);
 }
 
 void precompute_initial_union_estimates(std::vector<uint64_t> & estimates,
@@ -60,7 +80,7 @@ void precompute_initial_union_estimates(std::vector<uint64_t> & estimates,
     assert(positions.size() <= counts.size());
     assert(sketches.size() > 0u);
 
-    estimates.resize(sketches.size());
+    estimates.resize(positions.size());
 
     hyperloglog temp_hll = sketches[positions[0]];
     estimates[0] = counts[positions[0]];
