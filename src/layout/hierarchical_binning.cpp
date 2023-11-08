@@ -205,7 +205,7 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
             size_t j_prime{j - 1};
             size_t weight{current_weight};
 
-            auto get_weight = [&]()
+            auto get_weight = [&]() -> size_t
             {
                 // if we use the union estimate we plug in that value instead of the sum (weight)
                 // union_estimates[j_prime] is the union of {j_prime, ..., j}
