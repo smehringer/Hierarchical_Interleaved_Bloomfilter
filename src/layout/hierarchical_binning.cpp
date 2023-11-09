@@ -108,6 +108,7 @@ void hierarchical_binning::initialization(std::vector<std::vector<size_t>> & mat
     if (!config.disable_estimate_union)
     {
         data->union_estimation_timer.start();
+        data->union_estimates.resize(data->positions.size());
         sketch::toolbox::precompute_initial_union_estimates(matrix[0],
                                                             *data->sketches,
                                                             *data->kmer_counts,
