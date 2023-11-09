@@ -60,7 +60,7 @@ void update_union_estimates_with(std::vector<hyperloglog> & estimates,
 {
     assert(counts.size() == sketches.size());
     assert(positions.size() <= counts.size());
-    assert(estimates.size() == sketches.size()); // Resize happens in precompute_init_interval_union_estimations
+    assert(estimates.size() == positions.size()); // Resize happens in precompute_init_interval_union_estimations
     assert(estimates.size() > static_cast<size_t>(j));
 
     hyperloglog const sketch_j = sketches[positions[j]];
