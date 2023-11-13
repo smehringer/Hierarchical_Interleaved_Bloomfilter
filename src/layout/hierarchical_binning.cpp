@@ -108,7 +108,6 @@ void hierarchical_binning::initialization(std::vector<std::vector<size_t>> & mat
     if (!config.disable_estimate_union)
     {
         data->union_estimation_timer.start();
-        data->union_estimates.resize(data->positions.size());
         sketch::toolbox::precompute_initial_union_estimates(matrix[0],
                                                             *data->sketches,
                                                             *data->kmer_counts,
@@ -142,6 +141,9 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
 {
     assert(data != nullptr);
 
+    data->union_estimates.resize(data->positions.size());
+    data->union_estimate_sketches.resize(data->positions.size());
+
     // we must iterate column wise
     // i iterates over the technical bins
     // j iterates over the user bins
@@ -159,7 +161,8 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
         if (!config.disable_estimate_union)
         {
             data->union_estimation_timer.start();
-            sketch::toolbox::update_union_estimates_with(data->union_estimates,
+            sketch::toolbox::update_union_estimates_with(data->union_estimate_sketches,
+                                                         data->union_estimates,
                                                          *data->sketches,
                                                          *data->kmer_counts,
                                                          data->positions,
@@ -211,7 +214,7 @@ void hierarchical_binning::recursion(std::vector<std::vector<size_t>> & matrix,
                 // if we use the union estimate we plug in that value instead of the sum (weight)
                 // union_estimates[j_prime] is the union of {j_prime, ..., j}
                 // the + 1 is necessary because j_prime is decremented directly after weight is updated
-                return config.disable_estimate_union ? weight : data->union_estimates[j_prime + 1].estimate();
+                return config.disable_estimate_union ? weight : data->union_estimates[j_prime + 1];
             };
 
             // if the user bin j-1 was not split into multiple technical bins!

@@ -80,8 +80,11 @@ struct data_store
     //!\brief Information about previous levels of the IBF if the algorithm is called recursively.
     previous_level previous{};
 
-    //!\brief Matrix of estimates of merged bin cardinalites
-    std::vector<sketch::hyperloglog> union_estimates{};
+    //!\brief Vector of (current row) estimates of merged bin sketches.
+    std::vector<sketch::hyperloglog> union_estimate_sketches{};
+
+    //!\brief Vector of (current row) estimates of merged bin cardinalities.
+    std::vector<size_t> union_estimates{};
 
     bool user_bins_arranged{false};
 

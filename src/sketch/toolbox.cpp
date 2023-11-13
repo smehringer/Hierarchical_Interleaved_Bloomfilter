@@ -51,7 +51,8 @@ void precompute_union_estimates_for(std::vector<uint64_t> & estimates,
         estimates[j_prime] = static_cast<uint64_t>(temp_hll.merge_and_estimate(sketches[positions[j_prime]]));
 }
 
-void update_union_estimates_with(std::vector<hyperloglog> & estimates,
+void update_union_estimates_with(std::vector<hyperloglog> & estimate_sketches,
+                                 std::vector<size_t> & estimates,
                                  std::vector<hyperloglog> const & sketches,
                                  std::vector<size_t> const & counts,
                                  std::vector<size_t> const & positions,
@@ -68,7 +69,7 @@ void update_union_estimates_with(std::vector<hyperloglog> & estimates,
 
 #pragma omp parallel num_threads(number_of_threads)
     for (int64_t j_prime = 0; j_prime < j; ++j_prime)
-        estimates[j_prime].merge(sketch_j);
+        estimates[j_prime] = estimate_sketches[j_prime].merge_and_estimate(sketch_j);
 }
 
 void precompute_initial_union_estimates(std::vector<uint64_t> & estimates,
